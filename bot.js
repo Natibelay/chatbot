@@ -4,11 +4,14 @@ const axios = require('axios');
 const fs = require('fs');
 const express = require('express');
 
+// -------------------------
+// INIT BOT
+// -------------------------
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// =========================
+// -------------------------
 // USER TRACKING
-// =========================
+// -------------------------
 const usersFile = 'users.json';
 function addUser(userId) {
     let users = [];
@@ -21,9 +24,9 @@ function addUser(userId) {
     }
 }
 
-// =========================
+// -------------------------
 // START COMMAND & MENU
-// =========================
+// -------------------------
 bot.start((ctx) => {
     addUser(ctx.from.id);
     ctx.reply(
@@ -35,24 +38,27 @@ bot.start((ctx) => {
     );
 });
 
-// =========================
+// -------------------------
 // BTC PRICE
-// =========================
+// -------------------------
 bot.hears('📈 BTC Price', async (ctx) => {
     try {
         const res = await axios.get(
-            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd'
+            'https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false'
         );
-        ctx.reply(`💰 Bitcoin price: $${res.data.bitcoin.usd}`);
+
+        const price = res.data.market_data.current_price.usd;
+
+        ctx.reply(`💰 Bitcoin price: $${price}`);
     } catch (err) {
-        console.error(err);
-        ctx.reply('❌ Failed to fetch BTC price.');
+        console.error("BTC API Error:", err.response?.data || err.message);
+        ctx.reply("❌ Failed to fetch BTC price (API blocked on server).");
     }
 });
 
-// =========================
+// -------------------------
 // GOLD PRICE
-// =========================
+// -------------------------
 bot.hears('🟡 Gold Price', async (ctx) => {
     try {
         const res = await axios.get('https://www.goldapi.io/api/XAU/USD', {
@@ -61,16 +67,18 @@ bot.hears('🟡 Gold Price', async (ctx) => {
                 'Content-Type': 'application/json'
             }
         });
-        ctx.reply(`💰 Gold price: $${res.data.price} per ounce`);
+        ctx.reply(
+            `💰 Gold price: $${res.data.price} per ounce\n⏱ Last Updated: ${res.data.timestamp}`
+        );
     } catch (err) {
-        console.error(err);
+        console.error('Gold API Error:', err.response?.data || err.message);
         ctx.reply('❌ Failed to fetch Gold price. Check your API key.');
     }
 });
 
-// =========================
+// -------------------------
 // ABOUT BOT
-// =========================
+// -------------------------
 bot.hears('ℹ️ About Bot', (ctx) => {
     ctx.reply(
 `👨‍💻 Bot Developer: Nati
@@ -79,43 +87,45 @@ bot.hears('ℹ️ About Bot', (ctx) => {
     );
 });
 
-// =========================
+// -------------------------
 // HELP
-// =========================
+// -------------------------
 bot.hears('❓ Help', (ctx) => {
     ctx.reply(
-`Menuuu Commands:
+`Menu Commands:
 - 📈 BTC Price: Get current Bitcoin price
-- 🟡 Gold Price: Get current gold price
+- 🟡 Gold Price: Get current Gold price
 - ℹ️ About Bot: Learn about this bot`
     );
 });
 
-// =========================
+// -------------------------
 // FALLBACK
-// =========================
+// -------------------------
 bot.on('text', (ctx) => {
     ctx.reply("Please use the menu buttons to interact with the bot.");
 });
 
-// =========================
+// -------------------------
 // ERROR HANDLING
-// =========================
+// -------------------------
 bot.catch((err, ctx) => console.error(`Error for ${ctx.updateType}`, err));
 
-// =========================
+// -------------------------
 // LAUNCH BOT
-// =========================
+// -------------------------
 bot.launch().then(() => console.log("🤖 Bot is running..."));
 
-// =========================
+// -------------------------
 // EXPRESS SERVER FOR RENDER
-// =========================
+// -------------------------
 const app = express();
 app.get('/', (req, res) => res.send('Bot is running'));
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 
-// Graceful stop
+// -------------------------
+// GRACEFUL STOP
+// -------------------------
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
