@@ -84,7 +84,7 @@ bot.hears('ℹ️ About Bot', (ctx) => {
 // =========================
 bot.hears('❓ Help', (ctx) => {
     ctx.reply(
-`Menu Commands:
+`Menuuu Commands:
 - 📈 BTC Price: Get current Bitcoin price
 - 🟡 Gold Price: Get current gold price
 - ℹ️ About Bot: Learn about this bot`
