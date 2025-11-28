@@ -1,0 +1,41 @@
+[
+  {
+    "id": 377174148,
+    "username": "Natibelay",
+    "first_name": "NATI",
+    "actions": [
+      {
+        "action": "Help clicked",
+        "time": "2025-11-28T10:54:59.486Z"
+      },
+      {
+        "action": "Unknown text received",
+        "time": "2025-11-28T10:55:02.554Z"
+      },
+      {
+        "action": "Unknown text received",
+        "time": "2025-11-28T10:55:06.228Z"
+      },
+      {
+        "action": "BTC Price clicked",
+        "time": "2025-11-28T10:55:09.795Z"
+      },
+      {
+        "action": "About Bot clicked",
+        "time": "2025-11-28T10:55:13.118Z"
+      },
+      {
+        "action": "Gold Price clicked",
+        "time": "2025-11-28T10:55:14.366Z"
+      },
+      {
+        "action": "Help clicked",
+        "time": "2025-11-28T10:55:27.903Z"
+      },
+      {
+        "action": "Gold Price clicked",
+        "time": "2025-11-28T10:55:30.641Z"
+      }
+    ]
+  }
+]
