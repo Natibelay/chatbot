@@ -73,7 +73,7 @@ bot.hears('🟡 Gold Price', async (ctx) => {
 // =========================
 bot.hears('ℹ️ About Bot', (ctx) => {
     ctx.reply(
-`👨‍💻 Bot Developer: Natnael Belay (Nati)
+`👨‍💻 Bot Developer: Nati
 📍 Addis Ababa, Ethiopia
 🔹 Features: BTC & Gold Price, User Tracking, Menu Commands`,
     );
